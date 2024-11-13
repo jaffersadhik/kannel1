@@ -6,47 +6,47 @@
 # switch to our new autoconf/configure build process.
 #
 
-SHELL = @SHELL@
+SHELL = /bin/bash
 
-srcdir = @srcdir@
-top_srcdir = @top_srcdir@
-VPATH = @srcdir@
-prefix = @prefix@
-exec_prefix = @exec_prefix@
+srcdir = .
+top_srcdir = .
 
-bindir = @bindir@
-sbindir = @sbindir@
-libexecdir = @libexecdir@
-datadir = @datadir@
-datarootdir = @datarootdir@
-sysconfdir = @sysconfdir@
-sharedstatedir = @sharedstatedir@
-localstatedir = @localstatedir@
-libdir = @libdir@
-infodir = @infodir@
-mandir = @mandir@
-includedir = @includedir@
+prefix = /opt/kannel
+exec_prefix = ${prefix}
+
+bindir = ${exec_prefix}/bin
+sbindir = ${exec_prefix}/sbin
+libexecdir = ${exec_prefix}/libexec
+datadir = ${datarootdir}
+datarootdir = ${prefix}/share
+sysconfdir = ${prefix}/etc
+sharedstatedir = ${prefix}/com
+localstatedir = ${prefix}/var
+libdir = ${exec_prefix}/lib
+infodir = ${datarootdir}/info
+mandir = ${datarootdir}/man
+includedir = ${prefix}/include
 oldincludedir = /usr/include
 
-docdir = @docdir@
+docdir = ${prefix}/share/doc/kannel
 
 DESTDIR =
 
-pkgdatadir = $(datadir)/@PACKAGE@
-pkglibdir = $(libdir)/@PACKAGE@
-pkgincludedir = $(includedir)/@PACKAGE@
+pkgdatadir = $(datadir)/Kannel
+pkglibdir = $(libdir)/Kannel
+pkgincludedir = $(includedir)/Kannel
 
 top_builddir = .
 
-ACLOCAL = @ACLOCAL@
-AUTOCONF = @AUTOCONF@
-AUTOHEADER = @AUTOHEADER@
+ACLOCAL = ${SHELL} /home/deployments/kannel/kannel1/gateway-1.4.5/missing aclocal-1.14
+AUTOCONF = ${SHELL} /home/deployments/kannel/kannel1/gateway-1.4.5/missing autoconf
+AUTOHEADER = ${SHELL} /home/deployments/kannel/kannel1/gateway-1.4.5/missing autoheader
 
-INSTALL = @INSTALL@
-INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
-INSTALL_DATA = @INSTALL_DATA@
-INSTALL_SCRIPT = @INSTALL_SCRIPT@
-transform = @program_transform_name@
+INSTALL = /usr/bin/install -c
+INSTALL_PROGRAM = ${INSTALL} $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = ${INSTALL} -m 644
+INSTALL_SCRIPT = ${INSTALL}
+transform = s,x,x,
 
 NORMAL_INSTALL = :
 PRE_INSTALL = :
@@ -54,16 +54,16 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-CC = @CC@
-MAKEINFO = @MAKEINFO@
-PACKAGE = @PACKAGE@
-RANLIB = @RANLIB@
-SHELL = @SHELL@
-VERSION = @VERSION@
-SUFFIX = @SUFFIX@
-LEX = @LEX@
-PERL = @PERL@
-YACC = @YACC@
+CC = gcc
+MAKEINFO = ${SHELL} /home/deployments/kannel/kannel1/gateway-1.4.5/missing makeinfo
+PACKAGE = Kannel
+RANLIB = ranlib
+SHELL = /bin/bash
+VERSION = 1.4.5
+SUFFIX = 
+LEX = :
+PERL = /usr/bin/perl
+YACC = bison -y
 
 # -v gives verbose output.
 YFLAGS = -d -p ws_yy_
@@ -72,25 +72,25 @@ mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = gw-config.h
 CONFIG_CLEAN_FILES =
 
-LIBOBJS=@LIBOBJS@
+LIBOBJS=
 LIBSRCS=$(LIBOBJS:.o=.c)
 
-LIBS=@LIBS@ @LIBICONV@
-CFLAGS=-D_REENTRANT=1 -I. -Igw @CFLAGS@
-LDFLAGS=@LDFLAGS@
+LIBS=-lrt -lresolv -lm  -lpthread -lxml2 -L/usr/local/lib -lhiredis 
+CFLAGS=-D_REENTRANT=1 -I. -Igw -g -O2 -D_XOPEN_SOURCE=600 -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_LARGE_FILES= -DBROKEN_PTHREADS=1 -I/usr/include/libxml2 -I/usr/local/include/hiredis
+LDFLAGS= -rdynamic
 
 MKDEPEND=$(CC) $(CFLAGS) -MM
 
-JADE=@JADE@
-JADETEX=@JADETEX@
-PDFJADETEX=@PDFJADETEX@
-DVIPS=@DVIPS@
-FIG2DEV=@FIG2DEV@
-CONVERT=@CONVERT@
+JADE=no
+JADETEX=no
+PDFJADETEX=no
+DVIPS=no
+FIG2DEV=no
+CONVERT=no
 
-HTML_DSL=@HTML_DSL@
-TEX_DSL=@TEX_DSL@
-XML_DCL=@XML_DCL@
+HTML_DSL=
+TEX_DSL=
+XML_DCL=
 
 # Set this to something if you want all installed binaries to have a suffix.
 # Version number is common.
@@ -111,7 +111,7 @@ sbinsrcs = \
 	gw/wapbox.c
 progsrcs = $(binsrcs) $(sbinsrcs)
 progobjs = $(progsrcs:.c=.o)
-progs = $(progsrcs:.c=@EXE_EXT@)
+progs = $(progsrcs:.c=)
 binprogs = $(binsrcs:.c=) gw-config
 sbinprogs = $(sbinsrcs:.c=)
 
@@ -129,12 +129,12 @@ wmlscriptobjs = $(wmlscriptsrcs:.c=.o)
 
 testsrcs = $(wildcard test/*.c)
 testobjs = $(testsrcs:.c=.o)
-testprogs = $(testsrcs:.c=@EXE_EXT@)
+testprogs = $(testsrcs:.c=)
 tests = $(testprogs) $(wildcard test/*.sh)
 
 checksrcs = $(wildcard checks/*.c)
 checkobjs = $(checksrcs:.c=.o)
-checkprogs = $(checksrcs:.c=@EXE_EXT@)
+checkprogs = $(checksrcs:.c=)
 checks = $(checkprogs) $(wildcard checks/*.sh)
 
 benchformats = \
@@ -161,8 +161,8 @@ man8pages = gw/kannel.8
 
 docsrcs = $(wildcard grep -l '<!DOCTYPE ' doc/*/*.xml)
 docs = $(docsrcs:.xml=.html) $(docsrcs:.xml=.rtf) $(docsrcs:.xml=.ps) $(docsrcs:.xml=.pdf)
-DOCSTARGET=@DOCSTARGET@
-DOCDRAFTS=@DOCDRAFTS@
+DOCSTARGET=no-docs
+DOCDRAFTS=IGNORE
 
 pssrcs = $(wildcard doc/alligata/*.png doc/wtls/*.png)
 ps = $(pssrcs:.png=.ps)  
@@ -322,29 +322,34 @@ distclean: clean $(SUBDIRS)
 nag:
 	utils/find-long-lines
 
-@SOAP_INCLUDE@
 
 
+depend .depend: wmlscript/wsgram.h gw-config.h $(soap_depend)
+	for dir in $(srcdirs); do \
+	for file in $$dir/*.c; do \
+	    $(MKDEPEND) $$file -MT $$dir/`basename $$file .c`.o -MT $$dir/`basename $$file .c`.i; done; done > .depend  
+include .depend
 
 libgw.a: $(gwobjs)
-	@OLD_LIBTOOL@ libgw.a $(gwobjs)
+	ar rc libgw.a $(gwobjs)
 	$(RANLIB) libgw.a
 
 libgwlib.a: $(libobjs)
-	@OLD_LIBTOOL@  libgwlib.a $(libobjs)
+	ar rc  libgwlib.a $(libobjs)
 	$(RANLIB) libgwlib.a
 
 libwmlscript.a: $(wmlscriptobjs)
-	@OLD_LIBTOOL@ libwmlscript.a $(wmlscriptobjs)
+	ar rc libwmlscript.a $(wmlscriptobjs)
 	$(RANLIB) libwmlscript.a
 
 libwap.a: $(wapobjs)
-	@OLD_LIBTOOL@ libwap.a $(wapobjs)
+	ar rc libwap.a $(wapobjs)
 	$(RANLIB) libwap.a
 
+wmlscript/wsgram.h: wmlscript/wsgram.c
 
 make-op-table: $(srcdir)/wmlscript/make-op-table.in
-	sed 's%@PERLPROG@%@PERL@%g' $(srcdir)/wmlscript/make-op-table.in \
+	sed 's%@PERLPROG@%/usr/bin/perl%g' $(srcdir)/wmlscript/make-op-table.in \
 		> make-op-table
 	chmod a+x make-op-table
 
@@ -353,22 +358,22 @@ opcodes:
 		> $(srcdir)/wmlscript/wsopcodes.h
 
 $(progs): $(libs) $(progobjs)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(@:@EXE_EXT@=).o $(libs) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(@:=).o $(libs) $(LIBS)
 
 $(testprogs): $(testobjs) $(libs)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(@:@EXE_EXT@=).o $(libs) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(@:=).o $(libs) $(LIBS)
 
 $(checkprogs): $(checkobjs) $(libs)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(@:@EXE_EXT@=).o $(libs) $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(@:=).o $(libs) $(LIBS)
 
 pkg: all
 	(cd solaris; mk-solaris-package.sh)
 	echo Package is now in solaris directory
 
 gw-config: utils/foobar-config.sh Makefile
-	./utils/foobar-config.sh "-I$(includedir)/kannel @CFLAGS@" \
+	./utils/foobar-config.sh "-I$(includedir)/kannel -g -O2 -D_XOPEN_SOURCE=600 -D_BSD_SOURCE -D_DEFAULT_SOURCE -D_LARGE_FILES= -DBROKEN_PTHREADS=1 -I/usr/include/libxml2 -I/usr/local/include/hiredis" \
 		"-L$(libdir)/kannel -lgw -lwap -lgwlib $(LIBS)" \
-		"@VERSION@" > gw-config
+		"1.4.5" > gw-config
 	chmod 0755 gw-config
 
 $(SUBDIRS):

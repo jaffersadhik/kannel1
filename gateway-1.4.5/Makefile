@@ -324,11 +324,7 @@ nag:
 
 
 
-depend .depend: wmlscript/wsgram.h gw-config.h $(soap_depend)
-	for dir in $(srcdirs); do \
-	for file in $$dir/*.c; do \
-	    $(MKDEPEND) $$file -MT $$dir/`basename $$file .c`.o -MT $$dir/`basename $$file .c`.i; done; done > .depend  
-include .depend
+
 
 libgw.a: $(gwobjs)
 	ar rc libgw.a $(gwobjs)
@@ -346,7 +342,6 @@ libwap.a: $(wapobjs)
 	ar rc libwap.a $(wapobjs)
 	$(RANLIB) libwap.a
 
-wmlscript/wsgram.h: wmlscript/wsgram.c
 
 make-op-table: $(srcdir)/wmlscript/make-op-table.in
 	sed 's%@PERLPROG@%/usr/bin/perl%g' $(srcdir)/wmlscript/make-op-table.in \
