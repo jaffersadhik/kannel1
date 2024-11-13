@@ -365,8 +365,13 @@ struct YYLTYPE
 
 
 
-int ws_yy_parse (void);
 
+// wsgram.c (or wsgram.y after preprocessing)
+int ws_yy_parse(void *context) {
+    void *pctx = context; // Assuming context should be assigned to pctx
+    // Function implementation
+    ws_error_syntax(pctx, @1.first_line);
+}
 
 #endif /* !YY_WS_YY_Y_TAB_H_INCLUDED  */
 /* Symbol kind.  */
